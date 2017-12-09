@@ -1,7 +1,7 @@
 import os
 import re
 
-_test_data_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../tests")
+_test_data_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "./data")
 
 def list_files():
     """
