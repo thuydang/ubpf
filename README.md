@@ -30,6 +30,9 @@ You'll need [Clang 3.7] (http://llvm.org/releases/download.html#3.7.0).
 You can then pass the contents of `prog.o` to `ubpf_load_elf`, or to the stdin of
 the `vm/test` binary.
 
+## Run Experiment
+ 		nosetests -vv experiments/test_exp_run.py
+
 ## Contributing
 
 Please fork the project on GitHub and open a pull request. You can run all the
