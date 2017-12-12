@@ -39,3 +39,11 @@ tests with `nosetests`.
 
 Copyright 2015, Big Switch Networks, Inc. Licensed under the Apache License, Version 2.0
 <LICENSE-APACHE or http://www.apache.org/licenses/LICENSE-2.0>.
+
+## MY EXPERIMENT
+
+* create virtualenv
+* pip install requirements.txt
+* make -C vm
+* nosetests experiments/test_run.py
+
