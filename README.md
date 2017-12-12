@@ -30,8 +30,6 @@ You'll need [Clang 3.7] (http://llvm.org/releases/download.html#3.7.0).
 You can then pass the contents of `prog.o` to `ubpf_load_elf`, or to the stdin of
 the `vm/test` binary.
 
-## Run Experiment
- 		nosetests -vv experiments/test_exp_run.py
 
 ## Contributing
 
@@ -48,5 +46,8 @@ Copyright 2015, Big Switch Networks, Inc. Licensed under the Apache License, Ver
 * create virtualenv
 * pip install requirements.txt
 * make -C vm
-* nosetests experiments/test_run.py
+ 		nosetests experiments/test_run.py
 
+ 		nosetests -vv experiments/test_exp_run.py
+
+* -s to prevent stdout capture by nosetest
