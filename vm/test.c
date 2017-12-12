@@ -26,6 +26,7 @@
 #include <errno.h>
 #include <elf.h>
 #include <math.h>
+#include <time.h>
 #include "ubpf.h"
 
 void ubpf_set_register_offset(int x);
@@ -130,6 +131,13 @@ int main(int argc, char **argv)
 
     uint64_t ret;
 
+		/* start timer */
+		struct timespec tS;
+    tS.tv_sec = 0;
+    tS.tv_nsec = 0;
+    clock_settime(CLOCK_PROCESS_CPUTIME_ID, &tS);
+		/**/
+
     if (jit) {
         ubpf_jit_fn fn = ubpf_compile(vm, &errmsg);
         if (fn == NULL) {
@@ -142,7 +150,14 @@ int main(int argc, char **argv)
         ret = ubpf_exec(vm, mem, mem_len);
     }
 
-    printf("0x%"PRIx64"\n", ret);
+		/* stop timer */
+    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tS);
+
+		/* output match result and time (nsec), format: result;time */
+    //printf("0x%"PRIx64"\n", ret);
+    //printf("Time taken is (sec): %f  \n", (double)tS.tv_sec + (double)tS.tv_nsec / 1000000000.0);
+		printf("0x%"PRIx64";%f", ret, (double)tS.tv_sec + (double)tS.tv_nsec / 1000000000.0);
+
 
     ubpf_destroy(vm);
 
@@ -234,3 +249,17 @@ register_functions(struct ubpf_vm *vm)
     ubpf_register(vm, 3, "sqrti", sqrti);
     ubpf_register(vm, 4, "strcmp_ext", strcmp);
 }
+
+/* Timer functions */
+//static struct timespec diff(timespec start, timespec end)
+//{
+//	timespec temp;
+//	if ((end.tv_nsec-start.tv_nsec)<0) {
+//		temp.tv_sec = end.tv_sec-start.tv_sec-1;
+//		temp.tv_nsec = 1000000000+end.tv_nsec-start.tv_nsec;
+//	} else {
+//		temp.tv_sec = end.tv_sec-start.tv_sec;
+//		temp.tv_nsec = end.tv_nsec-start.tv_nsec;
+//	}
+//	return temp;
+//}
