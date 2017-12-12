@@ -2,7 +2,6 @@ import os
 import tempfile
 import struct
 import re
-from timeit import timeit
 from subprocess import Popen, PIPE
 from nose.plugins.skip import Skip, SkipTest
 import ubpf.assembler
@@ -42,8 +41,6 @@ def check_datafile(filename):
 
     stdout, stderr = vm.communicate(code)
     stderr = stderr.strip()
-
-    ##print timeit(stmt = "subprocess.call('...')", setup = "import subprocess", number = 100)
 
     if memfile:
         memfile.close()
