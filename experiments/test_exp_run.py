@@ -1,6 +1,10 @@
+from __future__ import print_function
 import os
 import pprint
+import datetime
 import tempfile
+import pickle
+
 import struct
 import re
 from timeit import timeit
@@ -19,6 +23,7 @@ functions:
 * setup_func, teardown_func: statistic collection
 '''
 
+_test_results_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "./results")
 VM = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "vm", "test")
 
 # Experiment setup and statistic
@@ -26,6 +31,8 @@ VM = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "vm", "test
 #statistics.setdefault(exp_id, []).append(int(time))
 statistics = {}
 experiment_iteration = 1000
+result_file = None
+result_filename = None
 
 def check_datafile(filename):
     """
@@ -99,12 +106,26 @@ def check_datafile(filename):
         memfile.close()
 
 def setup_func():
-    pass
+    statistics = {}
 
 def teardown_func():
-    print "tear down test fixtures \s"
-    pprint.pprint(statistics)
-    print "average match %f in %d interation: \n" % ( sum( item[0] for item in statistics.values()) / experiment_iteration, experiment_iteration )
+    print("tear down test fixtures", end=" ")
+
+    result_filename = "result_" + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + ".data"
+    fullpath = os.path.join(_test_results_dir, result_filename)
+    result_file = open(fullpath, "a")
+
+    # pickle dump the dictionary
+    # default protocol is zero
+    # -1 gives highest prototcol and smallest data file size
+    pickle.dump(statistics, result_file, protocol=0)
+    result_file.close()
+    #pprint.pprint(statistics, stream=result_file)
+
+    print('average match time %f in %d interation: \n' , ( sum( item[0] for item in statistics.values()) / experiment_iteration, experiment_iteration ) )
+    #result_file.write("average match time %f in %d interation: \n" % ( sum( item[0] for item in statistics.values()) / experiment_iteration, experiment_iteration ) )
+
+    result_file.close()
 
 @with_setup(setup_func, teardown_func)
 def test_datafiles():

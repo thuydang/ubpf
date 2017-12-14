@@ -51,3 +51,26 @@ Copyright 2015, Big Switch Networks, Inc. Licensed under the Apache License, Ver
  		nosetests -vv experiments/test_exp_run.py
 
 * -s to prevent stdout capture by nosetest
+
+### generate pcap, mem, etc:
+
+		cd experiments
+    python expand-testcase.py path_under_data/match folder_data
+    python expand-testcase.py matchheaders/match data
+
+Generated files are in data folder.
+
+### View pcap
+    hexview
+		tcpick -C -yP -r tcp_dump.pcap
+
+		tcpdump -qnns 0 -A -r blah.pcap
+
+Use this:
+
+		tcpdump -qnns 0 -X -r serverfault_request.pcap
+
+### Plot
+A script reads results as dictionary and draws graphs:
+    python plotly.py
+
