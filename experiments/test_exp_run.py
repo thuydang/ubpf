@@ -30,7 +30,7 @@ VM = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "vm", "test
 
 #statistics.setdefault(exp_id, []).append(int(time))
 statistics = {}
-experiment_iteration = 1000
+experiment_iteration = 100
 result_file = None
 result_filename = None
 
