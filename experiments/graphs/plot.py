@@ -39,8 +39,9 @@ def plot_file(filename):
     plt.xlabel('x')
     plt.ylabel('y (s)')
     plt.title('CPU time for paket match and match + actions')
-    plt.legend()
-    plt.show()
+    #plt.legend()
+    #plt.show()
+    plt.savefig(filename+'.eps', format='eps', dpi=1000)
 
 def list_files():
     """

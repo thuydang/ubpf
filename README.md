@@ -46,6 +46,7 @@ Copyright 2015, Big Switch Networks, Inc. Licensed under the Apache License, Ver
 * create virtualenv
 * pip install requirements.txt
 * make -C vm
++ run from top folder:
  		nosetests experiments/test_run.py
 
  		nosetests -vv experiments/test_exp_run.py
