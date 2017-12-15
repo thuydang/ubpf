@@ -29,16 +29,17 @@ VM = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "vm", "test
 # Experiment setup and statistic
 
 #statistics.setdefault(exp_id, []).append(int(time))
-statistics = {}
-experiment_iteration = 100
-result_file = None
-result_filename = None
+experiment_iteration = 500
 
 def check_datafile(filename):
     """
     Given assembly source code and an expected result, run the eBPF program and
     verify that the result matches.
     """
+    # Clear statistics
+    statistics = {}
+
+    # Start experiment
     data = testdata.read(filename)
     if 'asm' not in data and 'raw' not in data:
         raise SkipTest("no asm or raw section in datafile")
@@ -105,23 +106,40 @@ def check_datafile(filename):
     if memfile:
         memfile.close()
 
+    write_result(filename, statistics)
+
 def setup_func():
-    statistics = {}
+    pass
 
 def teardown_func():
+    pass
+
+def write_result(filename, statistics):
     print("tear down test fixtures", end=" ")
 
-    result_filename = "result_" + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + ".data"
+    filename = filename.replace('./', '')
+    filename = filename.replace('/', '_')
+    result_filename = "result_" + filename + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + ".data"
     fullpath = os.path.join(_test_results_dir, result_filename)
+
+    try:
+        os.remove(fullpath)
+    except OSError:
+        pass
+
     result_file = open(fullpath, "a")
 
     # pickle dump the dictionary
     # default protocol is zero
     # -1 gives highest prototcol and smallest data file size
     pickle.dump(statistics, result_file, protocol=0)
+    pprint.pprint(statistics)
+
     result_file.close()
+
     #pprint.pprint(statistics, stream=result_file)
 
+    print(fullpath)
     print('average match time %f in %d interation: \n' , ( sum( item[0] for item in statistics.values()) / experiment_iteration, experiment_iteration ) )
     #result_file.write("average match time %f in %d interation: \n" % ( sum( item[0] for item in statistics.values()) / experiment_iteration, experiment_iteration ) )
 
