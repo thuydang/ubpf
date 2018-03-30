@@ -51,6 +51,7 @@ def plot_file(filename):
     x = dictionary.keys()
     y = [item[0] for item in dictionary.values()] # https://docs.python.org/2/tutorial/datastructures.html#list-comprehensions
 
+
     fig, ax = plt.subplots()
     #plt.scatter(x,y, label='CPU time', color='k', s=15, marker="o")
     #ax.scatter(x,y, label=filename, color='k', s=15, marker="o")
@@ -77,6 +78,26 @@ def plot_file(filename):
     #plt.show()
     plt.savefig(filename+'.eps', format='eps', dpi=1000)
 
+def average_all():
+    data = collections.defaultdict(dict)
+
+    for filename in list_files():
+    #for filename in filenames:
+        fullpath = os.path.join(_result_data_dir, filename)
+        fin = open(fullpath, "r")
+        #data.update(filename = pickle.load(fin))
+        data[filename] = pickle.load(fin)
+        fin.close()
+
+
+    for filename, dictionary in data.iteritems():
+        print "%s" % filename
+        #x = dictionary.keys()
+        y = [item[0] for item in dictionary.values()] # https://docs.python.org/2/tutorial/datastructures.html#list-comprehensions
+        print sum(y)/float(len(y))
+
+
+
 def plot_all():
     ## Create the test dictionary
     #before_d = {}
@@ -101,9 +122,12 @@ def plot_all():
         data[filename] = pickle.load(fin)
         fin.close()
 
+    # Print data
     #pprint.pprint(data)
 
     fig, ax = plt.subplots()
+    #markers = ['x','+','*', 'p', 'd','x','+']
+    markers = ['x','+','*', 'p', 'd','^','.']
 
     for filename, dictionary in data.iteritems():
         print "%s" % filename
@@ -112,7 +136,7 @@ def plot_all():
 
         #plt.scatter(x,y, label='CPU time', color='k', s=15, marker="o")
         #ax.scatter(x,y, label=filename, color='k', s=15, marker="o")
-        ax.scatter(x,y, c=np.random.rand(3,), s=15, marker="o", label=filename)
+        ax.scatter(x,y, c=np.random.rand(3,), s=5, marker=markers.pop(), label=filename)
 
     # scaling
     #plt.yticks(np.arange(min, max, step))
@@ -142,6 +166,7 @@ def main():
     #    plot_file(filename)
 
     plot_all()
+    average_all()
 
 if __name__ == "__main__":
     main()

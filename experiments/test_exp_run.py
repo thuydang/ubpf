@@ -29,7 +29,7 @@ VM = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "vm", "test
 # Experiment setup and statistic
 
 #statistics.setdefault(exp_id, []).append(int(time))
-experiment_iteration = 500
+experiment_iteration = 3000
 
 def check_datafile(filename):
     """
