@@ -43,7 +43,13 @@ Copyright 2015, Big Switch Networks, Inc. Licensed under the Apache License, Ver
 
 ## MY EXPERIMENT
 
-* create virtualenv
+### What happens?
+In each experiments folder, the data folder contains data (in memory) and assembler code for processing that data. 
+The data and asm are tested against ubpf vm as following. Python call ubpf vm with data, asm as parameter, collect CPU time measurement 
+in a dictionary structure. The dictionaries are persisted in results folder. The dictionary are then used to plot results. 
+
+### How?
+* create virtualenv for python2
 * pip install requirements.txt
 * make -C vm
 + run from top folder:
@@ -73,5 +79,6 @@ Use this:
 
 ### Plot
 A script reads results as dictionary and draws graphs:
+		cd graphs
     python plotly.py
 
